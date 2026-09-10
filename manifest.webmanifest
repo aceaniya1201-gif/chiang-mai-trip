@@ -1,0 +1,19 @@
+{
+  "name": "清迈爽玩之",
+  "short_name": "清迈爽玩之",
+  "description": "2026 年五人清迈旅行的共享行程、打卡、花费与导航手册。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4ecd7",
+  "theme_color": "#254a37",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
