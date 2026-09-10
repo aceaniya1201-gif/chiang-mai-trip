@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="清迈慢旅行图标">
+  <rect width="512" height="512" rx="118" fill="#254a37"/>
+  <path d="M116 330c69-134 160-197 280-189-66 28-110 64-132 108 50-24 98-28 144-12-82 22-137 66-164 132-38 8-78-5-128-39Z" fill="#dba84a" opacity=".92"/>
+  <circle cx="187" cy="192" r="66" fill="#bd4b34"/>
+  <path d="M180 144c18 22 25 43 21 62-5 21-20 36-45 46 10-29 8-54-8-75 9-18 20-29 32-33Z" fill="#f4ecd7"/>
+  <text x="265" y="335" fill="#f4ecd7" font-family="serif" font-size="106" font-style="italic">CM</text>
+</svg>
