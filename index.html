@@ -1,0 +1,1761 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#254a37">
+  <meta name="description" content="小5和朋友们的 2026 清迈旅行手册：可编辑行程、打卡、花费、酒吧、餐厅与导航。">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="trip-app.css?v=4">
+  <title>清迈爽玩之</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f4ecd7;
+      --paper-deep: #e8d9b8;
+      --ink: #1d2b24;
+      --muted: #647067;
+      --leaf: #254a37;
+      --leaf-bright: #3f7053;
+      --lacquer: #bd4b34;
+      --lacquer-deep: #843327;
+      --rain: #7b9ea2;
+      --gold: #dba84a;
+      --cream: #fffaf0;
+      --line: rgba(37, 74, 55, .18);
+      --shadow: 0 18px 45px rgba(64, 53, 31, .14);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --display: "Baskerville", "Iowan Old Style", "Songti SC", "STSong", serif;
+      --body: "Avenir Next", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    }
+
+    body.night {
+      color-scheme: dark;
+      --paper: #10231b;
+      --paper-deep: #193129;
+      --ink: #f4ecd7;
+      --muted: #b3c1b8;
+      --leaf: #9ac09f;
+      --leaf-bright: #bad8b5;
+      --lacquer: #ef8062;
+      --lacquer-deep: #ffc0a5;
+      --rain: #91b5bd;
+      --gold: #edc875;
+      --cream: #172a22;
+      --line: rgba(244, 236, 215, .16);
+      --shadow: 0 22px 60px rgba(0, 0, 0, .34);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 84px;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 9% 3%, rgba(219, 168, 74, .26), transparent 24rem),
+        radial-gradient(circle at 91% 18%, rgba(123, 158, 162, .25), transparent 27rem),
+        linear-gradient(165deg, var(--paper), var(--paper-deep));
+      font-family: var(--body);
+      line-height: 1.6;
+      transition: color .45s ease, background-color .45s ease;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      content: "";
+      opacity: .2;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+    }
+
+    a { color: inherit; }
+    button, summary { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      padding: 10px 14px;
+      color: #fff;
+      background: var(--lacquer-deep);
+      border-radius: 8px;
+      transform: translateY(-180%);
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 34px));
+      margin: 0 auto;
+    }
+
+    .utility-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 12px 0;
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--leaf);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .22em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 31px;
+      height: 31px;
+      place-items: center;
+      color: var(--cream);
+      background: var(--leaf);
+      border-radius: 50% 50% 48% 52% / 52% 44% 56% 48%;
+      font-family: var(--display);
+      font-size: 17px;
+    }
+
+    .utility-actions { display: flex; gap: 8px; }
+
+    .icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      min-height: 42px;
+      padding: 8px 12px;
+      color: var(--ink);
+      background: color-mix(in srgb, var(--cream) 82%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(51, 40, 19, .08);
+    }
+
+    .icon-button:hover { transform: translateY(-2px); }
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 690px;
+      align-items: center;
+      padding: 72px 0 82px;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      position: absolute;
+      right: -8%;
+      bottom: 3%;
+      width: clamp(280px, 42vw, 520px);
+      aspect-ratio: 1;
+      content: "";
+      opacity: .55;
+      border: 1px solid var(--line);
+      border-radius: 52% 48% 38% 62% / 41% 34% 66% 59%;
+      box-shadow:
+        inset 34px 15px 0 color-mix(in srgb, var(--rain) 14%, transparent),
+        inset -38px -8px 0 color-mix(in srgb, var(--leaf) 10%, transparent);
+      transform: rotate(-9deg);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+      gap: clamp(36px, 8vw, 110px);
+      align-items: end;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 24px;
+      color: var(--lacquer);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 38px;
+      height: 1px;
+      content: "";
+      background: currentColor;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 820px;
+      margin-bottom: 30px;
+      font-family: var(--display);
+      font-size: clamp(58px, 10vw, 126px);
+      font-weight: 500;
+      letter-spacing: -.07em;
+      line-height: .83;
+    }
+
+    h1 span {
+      display: block;
+      margin-top: .18em;
+      color: var(--leaf);
+      font-size: .69em;
+      font-style: italic;
+      letter-spacing: -.055em;
+    }
+
+    .hero-copy {
+      max-width: 640px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+    }
+
+    .hero-stamp {
+      position: absolute;
+      top: -28px;
+      right: 2%;
+      display: grid;
+      width: 116px;
+      height: 116px;
+      place-items: center;
+      color: var(--lacquer);
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      font-family: var(--display);
+      font-size: 13px;
+      letter-spacing: .14em;
+      line-height: 1.25;
+      text-align: center;
+      text-transform: uppercase;
+      transform: rotate(8deg);
+    }
+
+    .countdown-card {
+      position: relative;
+      padding: 28px;
+      color: #fffaf0;
+      background: var(--leaf);
+      border-radius: 38px 12px 38px 12px;
+      box-shadow: var(--shadow);
+      transform: rotate(1.2deg);
+    }
+
+    body.night .countdown-card { color: #10231b; }
+
+    .countdown-card::before {
+      position: absolute;
+      top: -11px;
+      left: 38px;
+      width: 78px;
+      height: 23px;
+      content: "";
+      opacity: .76;
+      background: var(--gold);
+      transform: rotate(-4deg);
+    }
+
+    .countdown-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .countdown strong {
+      display: block;
+      font-family: var(--display);
+      font-size: clamp(31px, 4vw, 46px);
+      font-weight: 400;
+      letter-spacing: -.05em;
+      line-height: 1;
+    }
+
+    .countdown span span {
+      opacity: .7;
+      font-size: 10px;
+      letter-spacing: .15em;
+    }
+
+    .flight-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 26px;
+      padding-top: 20px;
+      border-top: 1px dashed rgba(255,255,255,.36);
+      font-size: 13px;
+    }
+
+    body.night .flight-ribbon { border-color: rgba(16,35,27,.28); }
+
+    .flight-ribbon strong { font-size: 18px; }
+
+    .section {
+      padding: 86px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: .7fr 1.3fr;
+      gap: 38px;
+      align-items: end;
+      margin-bottom: 44px;
+    }
+
+    .kicker {
+      margin: 0;
+      color: var(--lacquer);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-family: var(--display);
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 500;
+      letter-spacing: -.04em;
+      line-height: .98;
+    }
+
+    .section-intro {
+      max-width: 700px;
+      margin-top: 18px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .now-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+      gap: 22px;
+    }
+
+    .next-card {
+      position: relative;
+      min-height: 310px;
+      padding: clamp(28px, 5vw, 54px);
+      overflow: hidden;
+      color: #fffaf0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.05), transparent 46%),
+        var(--lacquer-deep);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .next-card::after {
+      position: absolute;
+      right: -40px;
+      bottom: -100px;
+      width: 280px;
+      height: 280px;
+      content: "";
+      border: 38px solid rgba(255,255,255,.07);
+      border-radius: 50%;
+    }
+
+    .next-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 58px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .pulse {
+      width: 9px;
+      height: 9px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(219,168,74,.65);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      70% { box-shadow: 0 0 0 13px rgba(219,168,74,0); }
+      100% { box-shadow: 0 0 0 0 rgba(219,168,74,0); }
+    }
+
+    .next-card h3 {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin-bottom: 12px;
+      font-family: var(--display);
+      font-size: clamp(34px, 5vw, 58px);
+      font-weight: 500;
+      letter-spacing: -.035em;
+      line-height: 1;
+    }
+
+    .next-countdown { position: relative; z-index: 1; opacity: .76; }
+
+    .fact-stack { display: grid; gap: 12px; }
+
+    .fact-card {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 14px;
+      align-items: center;
+      min-height: 92px;
+      padding: 18px;
+      background: color-mix(in srgb, var(--cream) 86%, transparent);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+    }
+
+    .fact-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      color: var(--leaf);
+      background: color-mix(in srgb, var(--leaf) 10%, transparent);
+      border-radius: 50%;
+      font-size: 20px;
+    }
+
+    .fact-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .fact-card strong { font-size: 15px; }
+
+    .route-card {
+      position: relative;
+      padding: clamp(24px, 4vw, 44px);
+      overflow: hidden;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .route-card svg { width: 100%; height: auto; overflow: visible; }
+    .route-line { fill: none; stroke: var(--leaf); stroke-width: 4; stroke-dasharray: 10 9; stroke-linecap: round; }
+    .route-branch { fill: none; stroke: var(--rain); stroke-width: 3; stroke-dasharray: 6 8; }
+    .route-node { fill: var(--cream); stroke: var(--lacquer); stroke-width: 4; }
+    .route-node.main { fill: var(--lacquer); stroke: var(--lacquer); }
+    .route-label { fill: var(--ink); font-family: var(--body); font-size: 15px; font-weight: 800; }
+    .route-note { fill: var(--muted); font-family: var(--body); font-size: 11px; }
+
+    .route-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 30px;
+      padding: 5px 11px;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--paper) 75%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .day-nav {
+      display: flex;
+      gap: 8px;
+      margin: 0 0 28px;
+      padding: 4px 2px 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .day-nav::-webkit-scrollbar { display: none; }
+
+    .day-nav a {
+      flex: 0 0 auto;
+      min-width: 70px;
+      padding: 10px 12px;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--cream) 72%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .day-nav strong, .day-nav span { display: block; }
+    .day-nav strong { color: var(--ink); font-size: 13px; }
+    .day-nav span { font-size: 10px; }
+
+    .days { display: grid; gap: 14px; }
+
+    .day-card {
+      background: color-mix(in srgb, var(--cream) 92%, transparent);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: clip;
+    }
+
+    .day-card[open] { box-shadow: var(--shadow); }
+
+    .day-card > summary {
+      display: grid;
+      grid-template-columns: 92px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      min-height: 126px;
+      padding: 22px 26px;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .day-card > summary::-webkit-details-marker { display: none; }
+
+    .day-date {
+      display: grid;
+      width: 74px;
+      height: 74px;
+      place-items: center;
+      color: var(--cream);
+      background: var(--leaf);
+      border-radius: 50% 45% 48% 52%;
+      font-family: var(--display);
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .day-date small {
+      display: block;
+      margin-top: -14px;
+      font-family: var(--body);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .day-title h3 {
+      margin-bottom: 3px;
+      font-family: var(--display);
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 500;
+      letter-spacing: -.025em;
+      line-height: 1.1;
+    }
+
+    .day-title p { margin-bottom: 0; color: var(--muted); font-size: 13px; }
+
+    .expand-icon {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      color: var(--leaf);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      transition: transform .25s ease;
+    }
+
+    .day-card[open] .expand-icon { transform: rotate(45deg); }
+
+    .day-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 30px;
+      padding: 0 30px 34px 138px;
+    }
+
+    .timeline { position: relative; }
+
+    .timeline::before {
+      position: absolute;
+      top: 15px;
+      bottom: 15px;
+      left: 76px;
+      width: 1px;
+      content: "";
+      background: var(--line);
+    }
+
+    .event {
+      position: relative;
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 32px;
+      padding: 14px 0 22px;
+    }
+
+    .event::before {
+      position: absolute;
+      top: 22px;
+      left: 71px;
+      width: 9px;
+      height: 9px;
+      content: "";
+      background: var(--cream);
+      border: 2px solid var(--lacquer);
+      border-radius: 50%;
+    }
+
+    .event time {
+      color: var(--lacquer);
+      font-family: var(--display);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .event h4 { margin: 0 0 4px; font-size: 16px; }
+    .event p { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+
+    .inline-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .map-link, .soft-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 34px;
+      padding: 6px 11px;
+      color: var(--leaf);
+      background: color-mix(in srgb, var(--leaf) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--leaf) 20%, transparent);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .map-link:hover, .soft-link:hover { background: color-mix(in srgb, var(--leaf) 15%, transparent); }
+
+    .day-aside {
+      align-self: start;
+      padding: 18px;
+      background: color-mix(in srgb, var(--rain) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--rain) 28%, transparent);
+      border-radius: var(--radius-md);
+    }
+
+    .day-aside strong { display: block; margin-bottom: 7px; font-size: 12px; }
+    .day-aside p { margin: 0; color: var(--muted); font-size: 12px; }
+
+    .no-drink {
+      color: var(--leaf);
+      background: color-mix(in srgb, var(--leaf) 10%, transparent);
+    }
+
+    .night-section {
+      position: relative;
+      color: #f5ead2;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(239, 128, 98, .2), transparent 32rem),
+        linear-gradient(150deg, #14291f, #091712);
+    }
+
+    .night-section .section-head,
+    .night-section .kicker,
+    .night-section h2 { color: #f5ead2; }
+
+    .night-section .section-intro { color: #b8c8be; }
+
+    .bar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .bar-card {
+      position: relative;
+      display: flex;
+      min-height: 380px;
+      flex-direction: column;
+      padding: 24px;
+      overflow: hidden;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 24px 8px 24px 8px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.2);
+    }
+
+    .bar-card:nth-child(2n) { transform: translateY(18px); }
+
+    .bar-card::after {
+      position: absolute;
+      top: -70px;
+      right: -65px;
+      width: 180px;
+      height: 180px;
+      content: "";
+      border: 1px solid rgba(237,200,117,.22);
+      border-radius: 50%;
+    }
+
+    .bar-number {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      color: #edc875;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .rating { color: #edc875; white-space: nowrap; }
+
+    .bar-card h3 {
+      margin-bottom: 8px;
+      font-family: var(--display);
+      font-size: 31px;
+      font-weight: 500;
+      letter-spacing: -.03em;
+      line-height: 1;
+    }
+
+    .bar-type { margin-bottom: 20px; color: #ef8062; font-size: 12px; font-weight: 800; }
+    .bar-card p { color: #b8c8be; font-size: 13px; }
+
+    .bar-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: auto 0 18px;
+    }
+
+    .bar-tags span {
+      padding: 4px 8px;
+      color: #d6e2d8;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 999px;
+      font-size: 10px;
+    }
+
+    .bar-card .map-link {
+      align-self: flex-start;
+      color: #f5ead2;
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.16);
+    }
+
+    .bar-note {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-top: 44px;
+      padding: 18px 20px;
+      color: #d6e2d8;
+      background: rgba(255,255,255,.05);
+      border-left: 3px solid #edc875;
+      border-radius: 0 12px 12px 0;
+      font-size: 12px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 26px;
+    }
+
+    .filter-button {
+      padding: 9px 14px;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .filter-button[aria-pressed="true"] {
+      color: var(--cream);
+      background: var(--leaf);
+      border-color: var(--leaf);
+    }
+
+    .pick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .pick-card {
+      display: flex;
+      min-height: 245px;
+      flex-direction: column;
+      padding: 22px;
+      background: color-mix(in srgb, var(--cream) 86%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 8px 24px 8px 24px;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .pick-card[hidden] { display: none; }
+
+    .pick-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .pick-category {
+      color: var(--lacquer);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .pick-card h3 {
+      margin-bottom: 7px;
+      font-family: var(--display);
+      font-size: 25px;
+      font-weight: 500;
+      line-height: 1.05;
+    }
+
+    .pick-card p { color: var(--muted); font-size: 12px; }
+    .pick-card .map-link { margin-top: auto; align-self: flex-start; }
+
+    .practical-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+    }
+
+    .checklist, .rain-card {
+      padding: clamp(24px, 4vw, 38px);
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+    }
+
+    .checklist h3, .rain-card h3 {
+      margin-bottom: 24px;
+      font-family: var(--display);
+      font-size: 30px;
+      font-weight: 500;
+    }
+
+    .plain-list { margin: 0; padding: 0; list-style: none; }
+
+    .plain-list li {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 10px;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .plain-list li::before {
+      display: grid;
+      width: 23px;
+      height: 23px;
+      place-items: center;
+      content: attr(data-step);
+      color: var(--cream);
+      background: var(--lacquer);
+      border-radius: 50%;
+      font-family: var(--display);
+      font-size: 12px;
+    }
+
+    .privacy-note {
+      margin-top: 22px;
+      padding: 16px;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--gold) 13%, transparent);
+      border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
+      border-radius: 12px;
+      font-size: 12px;
+    }
+
+    footer {
+      padding: 50px 0 110px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+    }
+
+    .footer-grid {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-title {
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: 27px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      right: 50%;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      z-index: 45;
+      display: flex;
+      gap: 4px;
+      padding: 6px;
+      background: color-mix(in srgb, var(--cream) 90%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 12px 35px rgba(25,31,27,.22);
+      backdrop-filter: blur(18px);
+      transform: translateX(50%);
+    }
+
+    .bottom-nav a {
+      display: grid;
+      min-width: 70px;
+      min-height: 42px;
+      place-items: center;
+      padding: 5px 12px;
+      color: var(--muted);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .bottom-nav a:hover { color: var(--cream); background: var(--leaf); }
+
+    .toast {
+      position: fixed;
+      right: 50%;
+      bottom: 78px;
+      z-index: 80;
+      padding: 10px 16px;
+      color: #fffaf0;
+      background: #1b2d24;
+      border-radius: 999px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(50%, 10px);
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .toast.show { opacity: 1; transform: translate(50%, 0); }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    [data-reveal].visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      [data-reveal] { opacity: 1; transform: none; }
+    }
+
+    @media (min-width: 901px) {
+      .bottom-nav {
+        right: 22px;
+        bottom: 50%;
+        flex-direction: column;
+        border-radius: 20px;
+        transform: translateY(50%);
+      }
+
+      .bottom-nav a {
+        min-width: 58px;
+        padding-inline: 10px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero { min-height: auto; padding-top: 50px; }
+      .hero-grid, .section-head, .now-grid, .practical-grid { grid-template-columns: 1fr; }
+      .hero-stamp { top: -10px; right: 0; width: 88px; height: 88px; font-size: 10px; }
+      .countdown-card { max-width: 520px; }
+      .bar-grid, .pick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .bar-card:nth-child(2n) { transform: none; }
+      .day-body { padding-left: 30px; }
+    }
+
+    @media (max-width: 620px) {
+      .page-shell { width: min(100% - 24px, 1180px); }
+      .utility-bar { width: calc(100% - 24px); }
+      .brand { letter-spacing: .13em; }
+      .hero { padding: 38px 0 64px; }
+      h1 { font-size: clamp(54px, 19vw, 84px); }
+      .hero-stamp { display: none; }
+      .section { padding: 64px 0; }
+      .section-head { gap: 12px; margin-bottom: 30px; }
+      .next-card { min-height: 280px; }
+      .day-card > summary { grid-template-columns: 60px 1fr auto; gap: 12px; padding: 16px; }
+      .day-date { width: 56px; height: 56px; font-size: 20px; }
+      .day-date small { margin-top: -9px; }
+      .day-body { grid-template-columns: 1fr; gap: 16px; padding: 0 18px 24px; }
+      .timeline::before { left: 62px; }
+      .event { grid-template-columns: 48px 1fr; gap: 28px; }
+      .event::before { left: 57px; }
+      .bar-grid, .pick-grid { grid-template-columns: 1fr; }
+      .bar-card { min-height: 345px; }
+      .bar-number { margin-bottom: 35px; }
+      .bottom-nav { width: calc(100% - 24px); justify-content: space-between; }
+      .bottom-nav a { min-width: 0; flex: 1; padding-inline: 8px; }
+      .footer-grid { align-items: flex-start; flex-direction: column; }
+      .countdown-card { padding: 23px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .utility-bar, .bottom-nav, .icon-button, .filters, .toast { display: none !important; }
+      .hero { min-height: auto; padding: 35px 0; }
+      .section { padding: 34px 0; break-inside: avoid; }
+      .day-card { break-inside: avoid; }
+      .day-card > .day-body { display: grid !important; }
+      .night-section { color: #111; background: #fff; }
+      .night-section .section-head, .night-section .kicker, .night-section h2 { color: #111; }
+      .bar-card { min-height: auto; color: #111; background: #fff; border-color: #ccc; box-shadow: none; }
+      .bar-card p, .bar-type, .bar-tags span, .night-section .section-intro { color: #333; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <div class="utility-bar">
+    <a class="brand" href="#top" aria-label="返回顶部">
+      <span class="brand-mark" aria-hidden="true">ช</span>
+      Chiang Mai · 2026
+    </a>
+    <div class="utility-actions">
+      <button class="icon-button" id="shareButton" type="button" aria-label="分享旅行手册" title="分享">↗</button>
+      <button class="icon-button" id="themeButton" type="button" aria-label="切换日夜主题" title="切换主题">☼</button>
+      <button class="icon-button" id="printButton" type="button" aria-label="打印旅行手册" title="打印">⌁</button>
+    </div>
+  </div>
+
+  <header class="hero page-shell" id="top">
+    <div class="hero-grid">
+      <div data-reveal>
+        <p class="eyebrow">8 days · 7 nights · 5 friends</p>
+        <h1>清迈<span>爽玩之</span></h1>
+        <p class="hero-copy">不赶景点、不卷步数。白天挑一件喜欢的事，咖啡和午睡都算正经安排；晚上再去一家酒吧，把快乐稳稳接住。</p>
+        <div class="hero-stamp" aria-hidden="true">Sep 25<br>— Oct 02<br>Chiang Mai</div>
+      </div>
+
+      <aside class="countdown-card" data-reveal aria-label="出发倒计时">
+        <div class="countdown-label"><span id="tripState">距离出发</span><span>UTC+8 → UTC+7</span></div>
+        <div class="countdown" id="heroCountdown" aria-live="polite">
+          <span><strong data-unit="days">--</strong><span>天</span></span>
+          <span><strong data-unit="hours">--</strong><span>时</span></span>
+          <span><strong data-unit="minutes">--</strong><span>分</span></span>
+          <span><strong data-unit="seconds">--</strong><span>秒</span></span>
+        </div>
+        <div class="flight-ribbon">
+          <div><small>去程</small><br><strong>PN6595</strong></div>
+          <div style="text-align:center">CKG&nbsp; 19:45<br>→</div>
+          <div style="text-align:right"><small>当地抵达</small><br><strong>CNX&nbsp; 21:35</strong></div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section page-shell" id="now">
+      <div class="section-head" data-reveal>
+        <p class="kicker">Right now</p>
+        <div>
+          <h2>下一件事</h2>
+          <p class="section-intro">先看这里就好：倒计时告诉你离下一站还有多久，人在重庆还是清迈，时间都按当地钟表来。</p>
+        </div>
+      </div>
+
+      <div class="now-grid">
+        <article class="next-card" data-reveal>
+          <div class="next-meta"><span class="pulse" aria-hidden="true"></span><span id="nextDate">正在定位行程</span></div>
+          <h3 id="nextTitle">读取下一项安排…</h3>
+          <p class="next-countdown" id="nextCountdown" aria-live="polite">—</p>
+        </article>
+        <div class="fact-stack" data-reveal>
+          <article class="fact-card">
+            <span class="fact-icon" aria-hidden="true">↻</span>
+            <div><small>共同行程</small><strong id="syncFactStatus">本机记录已开启</strong></div>
+          </article>
+          <article class="fact-card">
+            <span class="fact-icon" aria-hidden="true">住</span>
+            <div><small>住宿区域</small><strong>古城西侧 · 帕辛区</strong></div>
+          </article>
+          <article class="fact-card">
+            <span class="fact-icon" aria-hidden="true">行</span>
+            <div><small>交通策略</small><strong>城内 Grab · 郊区包车</strong></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="squad-strip" aria-label="同行小队" data-reveal>
+        <article class="squad-member">
+          <img class="squad-photo" src="assets/avatars/xiao5.jpg" alt="小5的猫猫阿尼亚" width="72" height="72">
+          <div><small>队长 · 阿尼亚代班</small><strong>小5</strong></div>
+        </article>
+        <article class="squad-member">
+          <img class="squad-photo" src="assets/avatars/xiaoxiong.jpg" alt="小熊和狗狗艾斯" width="72" height="72">
+          <div><small>妈妈 · 艾斯陪同</small><strong>小熊</strong></div>
+        </article>
+        <article class="squad-member">
+          <img class="squad-photo" src="assets/avatars/xiaolan.jpg" alt="小兰" width="72" height="72">
+          <div><small>同行小队</small><strong>小兰</strong></div>
+        </article>
+        <article class="squad-member">
+          <img class="squad-photo" src="assets/avatars/xiaochen.jpg" alt="小陈" width="72" height="72">
+          <div><small>同行小队</small><strong>小陈</strong></div>
+        </article>
+        <article class="squad-member">
+          <img class="squad-photo" src="assets/avatars/xiaozhu.jpg" alt="小猪" width="72" height="72">
+          <div><small>同行小队</small><strong>小猪</strong></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section page-shell" id="route">
+      <div class="section-head" data-reveal>
+        <p class="kicker">One calm loop</p>
+        <div>
+          <h2>路线不绕路</h2>
+          <p class="section-intro">住在古城西侧就像把圆规钉在中心：城内按片区慢慢走，郊区集中包车跑一趟，少折返，也少一点“我怎么又在路上”。</p>
+        </div>
+      </div>
+
+      <div class="route-card" data-reveal>
+        <svg viewBox="0 0 980 420" role="img" aria-labelledby="routeTitle routeDesc">
+          <title id="routeTitle">清迈八天路线概览</title>
+          <desc id="routeDesc">从重庆飞往清迈，以古城为中心，前往宁曼和清迈大学，并在一天内游览粘粘瀑布与手工纸公园。</desc>
+          <path class="route-line" d="M90 300 C170 225 210 185 300 210 S435 298 525 240 S650 146 735 202 S826 300 900 260"/>
+          <path class="route-branch" d="M300 210 C280 130 320 76 397 65"/>
+          <path class="route-branch" d="M300 210 C415 130 495 110 604 95"/>
+          <circle class="route-node" cx="90" cy="300" r="12"/>
+          <circle class="route-node main" cx="300" cy="210" r="15"/>
+          <circle class="route-node" cx="397" cy="65" r="12"/>
+          <circle class="route-node" cx="604" cy="95" r="12"/>
+          <circle class="route-node" cx="525" cy="240" r="12"/>
+          <circle class="route-node" cx="735" cy="202" r="12"/>
+          <circle class="route-node" cx="900" cy="260" r="12"/>
+          <text class="route-label" x="50" y="338">重庆</text>
+          <text class="route-note" x="38" y="358">9/25 出发</text>
+          <text class="route-label" x="252" y="250">古城 · 帕辛</text>
+          <text class="route-note" x="257" y="270">七晚同住</text>
+          <text class="route-label" x="348" y="40">粘粘瀑布</text>
+          <text class="route-note" x="344" y="22">雨季可换日</text>
+          <text class="route-label" x="547" y="72">POOPOOPAPER</text>
+          <text class="route-note" x="563" y="52">手作体验</text>
+          <text class="route-label" x="490" y="280">宁曼</text>
+          <text class="route-note" x="480" y="300">咖啡与逛店</text>
+          <text class="route-label" x="680" y="175">清迈大学</text>
+          <text class="route-note" x="686" y="155">水库夕阳</text>
+          <text class="route-label" x="862" y="300">返程</text>
+          <text class="route-note" x="844" y="320">10/2 晚</text>
+        </svg>
+        <div class="route-legend">
+          <span class="pill">● 住宿中心</span>
+          <span class="pill">--- 城市慢行</span>
+          <span class="pill">┈ 郊区包车</span>
+          <span class="pill">☂ 户外日可随天气互换</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section page-shell" id="days">
+      <div class="section-head" data-reveal>
+        <p class="kicker">Day by day</p>
+        <div>
+          <h2>每天只做一件大事</h2>
+          <p class="section-intro">下面是“可以随时改”的草稿，不是军训表。每天留一点空，天气、体力和临时发现都能插队。</p>
+        </div>
+      </div>
+
+      <div class="planner-toolbar" data-reveal aria-label="行程编辑和同步工具">
+        <div class="planner-toolbar-group">
+          <button class="planner-button primary" id="editTripButton" type="button" aria-pressed="false">✎ 编辑行程</button>
+          <span class="sync-chip" id="syncStatus" data-state="local"><span class="sync-dot" aria-hidden="true"></span><span>正在读取记录</span></span>
+        </div>
+        <div class="planner-toolbar-group">
+          <span class="trip-total">全程已记 <strong id="tripExpenseTotal">฿0 · ¥0</strong></span>
+          <button class="planner-button" id="syncNowButton" type="button">↻ 立即同步</button>
+        </div>
+      </div>
+
+      <nav class="day-nav" aria-label="按日期查看行程" data-reveal>
+        <a href="#day-0925"><strong>9/25</strong><span>周五</span></a>
+        <a href="#day-0926"><strong>9/26</strong><span>周六</span></a>
+        <a href="#day-0927"><strong>9/27</strong><span>周日</span></a>
+        <a href="#day-0928"><strong>9/28</strong><span>周一</span></a>
+        <a href="#day-0929"><strong>9/29</strong><span>周二</span></a>
+        <a href="#day-0930"><strong>9/30</strong><span>周三</span></a>
+        <a href="#day-1001"><strong>10/1</strong><span>周四</span></a>
+        <a href="#day-1002"><strong>10/2</strong><span>周五</span></a>
+      </nav>
+
+      <div class="days">
+        <details class="day-card" id="day-0925" data-date="2026-09-25" data-reveal>
+          <summary>
+            <span class="day-date">25<small>SEP</small></span>
+            <span class="day-title"><h3>重庆 → 清迈</h3><p>先把人和行李送到清迈，今晚只负责睡饱。</p></span>
+            <span class="expand-icon" aria-hidden="true">＋</span>
+          </summary>
+          <div class="day-body">
+            <div class="timeline">
+              <article class="event"><time>16:45</time><div><h4>建议抵达重庆江北 T3</h4><p>国际航班预留约 3 小时。护照与购票证件放随身包，不写进共享网页。</p></div></article>
+              <article class="event"><time>19:45</time><div><h4>PN6595 起飞</h4><p>重庆时间出发；清迈比重庆慢 1 小时。</p></div></article>
+              <article class="event"><time>21:35</time><div><h4>抵达清迈</h4><p>入境、取行李后使用 Grab Van；若车型装不下五人行李，直接分两辆车。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Chiang+Mai+International+Airport" target="_blank" rel="noopener">打开机场地图 ↗</a></div></div></article>
+              <article class="event"><time>23:00</time><div><h4>入住、洗澡、睡觉</h4><p>不安排酒吧，不为“第一晚必须玩”牺牲第二天状态。</p></div></article>
+            </div>
+            <aside class="day-aside no-drink"><strong>今晚不喝酒</strong><p>今天先把人安顿好；水、热饭和一张舒服的床，比第一杯酒更重要。</p></aside>
+          </div>
+        </details>
+
+        <details class="day-card" id="day-0926" data-date="2026-09-26" data-reveal>
+          <summary>
+            <span class="day-date">26<small>SEP</small></span>
+            <span class="day-title"><h3>古城软着陆</h3><p>寺庙、泰北菜、夜市，第一晚先和古城混个脸熟。</p></span>
+            <span class="expand-icon" aria-hidden="true">＋</span>
+          </summary>
+          <div class="day-body">
+            <div class="timeline">
+              <article class="event"><time>10:30</time><div><h4>睡醒再出门 · Akha Ama</h4><p>在帕辛寺附近喝第一杯泰北咖啡；空间比热门小店宽松。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Akha+Ama+Phrasingh+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a></div></div></article>
+              <article class="event"><time>11:45</time><div><h4>帕辛寺与古城西侧慢逛</h4><p>只选一座寺庙认真看。进入主殿注意遮肩、过膝并脱鞋。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Wat+Phra+Singh+Chiang+Mai" target="_blank" rel="noopener">导航 ↗</a></div></div></article>
+              <article class="event"><time>13:15</time><div><h4>Lookbua Thai Food 午餐</h4><p>朋友明确好评，公开评价量也足。五人建议避开 12:00 和 18:30 的高峰。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Lookbua+Thai+Food+Restaurant+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a></div></div></article>
+              <article class="event"><time>15:00</time><div><h4>回去睡午觉</h4><p>刚落地后的留白，不加咖啡厅、不加购物任务。</p></div></article>
+              <article class="event"><time>17:30</time><div><h4>周六步行街 · 想逛再去</h4><p>控制在 90 分钟左右；下雨或体力不足可以直接跳到晚餐。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Wua+Lai+Walking+Street+Chiang+Mai" target="_blank" rel="noopener">夜市地图 ↗</a></div></div></article>
+              <article class="event"><time>21:15</time><div><h4>Bitter Truth</h4><p>第一晚选离古城南侧近的创意鸡尾酒吧，坐吧台更能看调酒。</p><div class="inline-actions"><a class="soft-link" href="#bar-bitter">查看酒吧卡片 ↓</a></div></div></article>
+            </div>
+            <aside class="day-aside"><strong>节奏提醒</strong><p>夜市和酒吧都在晚上，白天留个午觉坑位，晚上才有电。</p></aside>
+          </div>
+        </details>
+
+        <details class="day-card" id="day-0927" data-date="2026-09-27" data-reveal>
+          <summary>
+            <span class="day-date">27<small>SEP</small></span>
+            <span class="day-title"><h3>宁曼与校园夕阳</h3><p>上午逛宁曼，傍晚去水库，晚上看大家还想不想逛夜市。</p></span>
+            <span class="expand-icon" aria-hidden="true">＋</span>
+          </summary>
+          <div class="day-body">
+            <div class="timeline">
+              <article class="event"><time>11:00</time><div><h4>宁曼路慢慢逛</h4><p>Ristr8to 只在排队短时进入；One Nimman 用来逛店和躲雨。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Ristr8to+Original+Chiang+Mai" target="_blank" rel="noopener">Ristr8to ↗</a><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=One+Nimman+Chiang+Mai" target="_blank" rel="noopener">One Nimman ↗</a></div></div></article>
+              <article class="event"><time>14:00</time><div><h4>回民宿或找一家店坐着</h4><p>不要为了“来都来了”继续暴走，为傍晚和夜市留体力。</p></div></article>
+              <article class="event"><time>16:30</time><div><h4>清迈大学 · Ang Kaew 水库</h4><p>主目标是水库与素贴山背景，不做校园景点清单。部分校门可能临时限制车辆，Grab 到主门后步行。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Ang+Kaew+Reservoir+Chiang+Mai+University" target="_blank" rel="noopener">水库导航 ↗</a></div></div></article>
+              <article class="event"><time>18:30</time><div><h4>周日夜市</h4><p>从塔佩门向古城内延伸。先吃想吃的，再逛手作，不要求走完全程。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Sunday+Walking+Street+Chiang+Mai" target="_blank" rel="noopener">夜市地图 ↗</a></div></div></article>
+              <article class="event"><time>21:30</time><div><h4>The White Rabbit</h4><p>安静、冷气足、适合五个人聊天；入口隐蔽，跟着地图到二楼。</p><div class="inline-actions"><a class="soft-link" href="#bar-rabbit">查看酒吧卡片 ↓</a></div></div></article>
+            </div>
+            <aside class="day-aside"><strong>下雨怎么办</strong><p>水库看雨势；雨大就把 One Nimman 当临时客厅，夜市也可以明天再说。</p></aside>
+          </div>
+        </details>
+
+        <details class="day-card" id="day-0928" data-date="2026-09-28" data-reveal>
+          <summary>
+            <span class="day-date">28<small>SEP</small></span>
+            <span class="day-title"><h3>粘粘瀑布与手工纸</h3><p>今天把郊区集中玩掉：瀑布玩水，手工纸留纪念。</p></span>
+            <span class="expand-icon" aria-hidden="true">＋</span>
+          </summary>
+          <div class="day-body">
+            <div class="timeline">
+              <article class="event"><time>08:00</time><div><h4>包车从古城出发</h4><p>建议 6–9 座带司机车辆。前一晚不熬太久，车上可以补觉。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=Chiang+Mai+Old+City&amp;destination=Chiang+Mai+Old+City&amp;waypoints=Bua+Tong+Sticky+Waterfalls%7CElephant+POOPOOPAPER+Park&amp;travelmode=driving" target="_blank" rel="noopener">打开全天路线 ↗</a></div></div></article>
+              <article class="event"><time>09:20</time><div><h4>粘粘瀑布 · Bua Tong</h4><p>先走台阶到合适位置，再往上爬；青苔处仍可能滑。小熊可以只看上层、七彩泉和休息区。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Bua+Tong+Sticky+Waterfalls" target="_blank" rel="noopener">Google Maps ↗</a></div></div></article>
+              <article class="event"><time>12:00</time><div><h4>简单午餐与换衣</h4><p>带速干衣、水鞋、防水手机袋和一套干衣服；不要把贵重物品带到水里。</p></div></article>
+              <article class="event"><time>14:00</time><div><h4>Elephant POOPOOPAPER Park</h4><p>这里没有现场大象，重点是看象粪纤维变成纸并制作自己的纪念品。每日约 09:00–17:00，最后导览约 16:00。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Elephant+POOPOOPAPER+Park+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a><a class="soft-link" href="https://www.poopoopaperpark.com/" target="_blank" rel="noopener">官方网站 ↗</a></div></div></article>
+              <article class="event"><time>17:30</time><div><h4>回城休息</h4><p>今晚不约复杂晚餐，洗澡、吃近处的东西即可。</p></div></article>
+              <article class="event"><time>21:00</time><div><h4>Nophaburi Bar</h4><p>泰国本地香料与水果入酒，离帕辛区近。周三休息，所以放在周一正合适。</p><div class="inline-actions"><a class="soft-link" href="#bar-nophaburi">查看酒吧卡片 ↓</a></div></div></article>
+            </div>
+            <aside class="day-aside"><strong>雨天交换卡</strong><p>48 小时前看天气：大雨就和 9/29 对调，雷雨天不去瀑布，安全优先。</p></aside>
+          </div>
+        </details>
+
+        <details class="day-card" id="day-0929" data-date="2026-09-29" data-reveal>
+          <summary>
+            <span class="day-date">29<small>SEP</small></span>
+            <span class="day-title"><h3>按摩修复日</h3><p>瀑布后的身体交给按摩，晚上的音乐交给 North Gate。</p></span>
+            <span class="expand-icon" aria-hidden="true">＋</span>
+          </summary>
+          <div class="day-body">
+            <div class="timeline">
+              <article class="event"><time>10:30</time><div><h4>晚起与早午餐</h4><p>如果想吃咖喱面，可在 10:00–14:00 去 Khao Soi Khun Yai；周日休息，今天时间合适。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Khao+Soi+Khun+Yai+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a></div></div></article>
+              <article class="event"><time>13:00</time><div><h4>完全自由</h4><p>补觉、洗衣、单独行动、找咖啡店都可以。不设置集合任务。</p></div></article>
+              <article class="event"><time>15:00</time><div><h4>Makkha Rachadamnoen</h4><p>建议预约 90–120 分钟，并提前 15 分钟到。价格较高，但环境和完整度稳定。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Makkha+Health+Spa+Rachadamnoen+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a></div></div></article>
+              <article class="event"><time>17:30</time><div><h4>早点吃晚饭</h4><p>North Gate 周二 Jam Night 人多，想坐下就不要把晚餐拖晚。</p></div></article>
+              <article class="event"><time>19:15</time><div><h4>North Gate Jazz Co-Op</h4><p>音乐约 19:30 后陆续开始。这里靠音乐取胜，不靠舒适座位；晚到可能站在街边。</p><div class="inline-actions"><a class="soft-link" href="#bar-northgate">查看酒吧卡片 ↓</a></div></div></article>
+            </div>
+            <aside class="day-aside"><strong>不想挤？</strong><p>不想站着就换安静酒吧，热门不等于必修课。</p></aside>
+          </div>
+        </details>
+
+        <details class="day-card" id="day-0930" data-date="2026-09-30" data-reveal>
+          <summary>
+            <span class="day-date">30<small>SEP</small></span>
+            <span class="day-title"><h3>没有计划的一天</h3><p>不排满，想去哪就去哪；18:00 记得去 Bar.San 报到。</p></span>
+            <span class="expand-icon" aria-hidden="true">＋</span>
+          </summary>
+          <div class="day-body">
+            <div class="timeline">
+              <article class="event"><time>11:00</time><div><h4>Fern Forest 或 Craft Coffee</h4><p>Fern Forest 适合工作日上午，周末较吵；朋友对 Craft Coffee 的咖啡和服务都明确好评。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Fern+Forest+Cafe+Chiang+Mai" target="_blank" rel="noopener">Fern Forest ↗</a><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Craft+Coffee+Chiang+Mai+Old+City" target="_blank" rel="noopener">Craft Coffee ↗</a></div></div></article>
+              <article class="event"><time>13:00</time><div><h4>各自喜欢的下午</h4><p>逛 Warorot、回去睡觉或再做一次平价按摩。泰餐课只在大雨且大家临时想参加时启用。</p></div></article>
+              <article class="event"><time>18:00</time><div><h4>Bar.San · 开门即到</h4><p>朋友等过约两小时，所以不按普通酒吧习惯晚到。先喝一轮、吃少量小食，再去附近晚餐。</p><div class="inline-actions"><a class="soft-link" href="#bar-san">查看酒吧卡片 ↓</a></div></div></article>
+              <article class="event"><time>20:00</time><div><h4>长康路或河畔晚餐</h4><p>不预设网红餐厅，按当晚饥饿程度和等位情况选择。</p></div></article>
+            </div>
+            <aside class="day-aside"><strong>这一天故意很空</strong><p>连续几天后体力会各走各的，下午自由活动，晚上再集合，刚刚好。</p></aside>
+          </div>
+        </details>
+
+        <details class="day-card" id="day-1001" data-date="2026-10-01" data-reveal>
+          <summary>
+            <span class="day-date">01<small>OCT</small></span>
+            <span class="day-title"><h3>森林寺与告别晚餐</h3><p>森林寺、告别晚餐和最后一杯，慢慢把行李心情都收好。</p></span>
+            <span class="expand-icon" aria-hidden="true">＋</span>
+          </summary>
+          <div class="day-body">
+            <div class="timeline">
+              <article class="event"><time>10:30</time><div><h4>乌蒙寺</h4><p>林中隧道寺庙比普通打卡寺庙更有记忆点，建议避开正午最热时段。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Wat+Umong+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a></div></div></article>
+              <article class="event"><time>12:15</time><div><h4>Baan Kang Wat · 顺路才去</h4><p>朋友认为商品偏贵、商业化，所以只当作附近喝咖啡和休息的选项，不安排购物任务。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Baan+Kang+Wat+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a></div></div></article>
+              <article class="event"><time>14:30</time><div><h4>回去休息、开始收行李</h4><p>把最后一天晚上留给好好吃饭，而不是回去通宵整理。</p></div></article>
+              <article class="event"><time>18:00</time><div><h4>告别晚餐</h4><p>Baan Landai 或 Huen Muan Jai 二选一；前者建议预约，后者接受排队。</p><div class="inline-actions"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Baan+Landai+Chiang+Mai" target="_blank" rel="noopener">Baan Landai ↗</a><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Huen+Muan+Jai+Chiang+Mai" target="_blank" rel="noopener">Huen Muan Jai ↗</a></div></div></article>
+              <article class="event"><time>21:00</time><div><h4>Gladwell Cocktail Bar</h4><p>全程评分最高的一家放在最后一晚。适合聊天，也可以请调酒师按口味定制。</p><div class="inline-actions"><a class="soft-link" href="#bar-gladwell">查看酒吧卡片 ↓</a></div></div></article>
+            </div>
+            <aside class="day-aside"><strong>五个人的告别夜</strong><p>晚餐和酒吧尽量早约，今晚只安排一场，把聊天留到最后。</p></aside>
+          </div>
+        </details>
+
+        <details class="day-card" id="day-1002" data-date="2026-10-02" data-reveal>
+          <summary>
+            <span class="day-date">02<small>OCT</small></span>
+            <span class="day-title"><h3>清迈 → 重庆</h3><p>白天不赶路，晚上准时去机场，清迈下次见。</p></span>
+            <span class="expand-icon" aria-hidden="true">＋</span>
+          </summary>
+          <div class="day-body">
+            <div class="timeline">
+              <article class="event"><time>10:30</time><div><h4>早午餐与最后一杯咖啡</h4><p>选择民宿附近，不跨城追店。确认是否能寄存行李或延迟退房。</p></div></article>
+              <article class="event"><time>12:00</time><div><h4>退房、寄存行李</h4><p>完整地址只保留在订房 App 和五个人的私人群里。</p></div></article>
+              <article class="event"><time>13:00</time><div><h4>伴手礼与自由时间</h4><p>不安排郊区、不按摩到太晚，也不要购买无法托运或入境的物品。</p></div></article>
+              <article class="event"><time>19:15</time><div><h4>Grab 前往清迈机场</h4><p>五人带行李仍按 Grab Van 或两辆车准备，国际航班预留约 3 小时。</p></div></article>
+              <article class="event"><time>22:35</time><div><h4>PN6596 起飞</h4><p>预计 10 月 3 日 01:55 抵达重庆江北 T3。</p></div></article>
+            </div>
+            <aside class="day-aside no-drink"><strong>今晚不喝酒</strong><p>机场日的目标只有两个：准时到达、舒服回家。</p></aside>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section night-section" id="bars">
+      <div class="page-shell">
+        <div class="section-head" data-reveal>
+          <p class="kicker">Six nights, six bars</p>
+          <div>
+            <h2>夜里再认识一次清迈</h2>
+            <p class="section-intro">这六家按评分、氛围和营业日挑过，一晚一家刚刚好；9/25 和 10/2 是休息夜，不喝也算会玩。</p>
+          </div>
+        </div>
+
+        <div class="bar-grid">
+          <article class="bar-card" id="bar-bitter" data-reveal>
+            <div class="bar-number"><span>01 · 9/26</span><span class="rating">★ 4.8 · 293+</span></div>
+            <h3>Bitter Truth</h3>
+            <div class="bar-type">创意鸡尾酒 · 古城南侧</div>
+            <p>口味大胆但不是纯噱头，吧台体验最好。周六晚上可能满座，夜市结束后不要拖得太晚。</p>
+            <div class="bar-tags"><span>18:00–00:00</span><span>฿฿</span><span>适合看调酒</span></div>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Bitter+Truth+Bar+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a>
+          </article>
+
+          <article class="bar-card" id="bar-rabbit" data-reveal>
+            <div class="bar-number"><span>02 · 9/27</span><span class="rating">★ 4.8 · 377+</span></div>
+            <h3>The White Rabbit</h3>
+            <div class="bar-type">Speakeasy · 安静聊天</div>
+            <p>入口藏在小巷和旧楼二层，冷气、座椅和服务都更完整。公开评价中也有七人同行的正面反馈。</p>
+            <div class="bar-tags"><span>18:00–00:00</span><span>฿฿฿</span><span>五人友好</span></div>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=The+White+Rabbit+Chiang+Mai+Bar" target="_blank" rel="noopener">Google Maps ↗</a>
+          </article>
+
+          <article class="bar-card" id="bar-nophaburi" data-reveal>
+            <div class="bar-number"><span>03 · 9/28</span><span class="rating">★ 4.8 · 498+</span></div>
+            <h3>Nophaburi</h3>
+            <div class="bar-type">泰式风味 · 离住宿区近</div>
+            <p>用泰国本地香料和水果做酒，氛围亲切。空间较小，郊区日回来后 21:00 左右喝一杯刚好。</p>
+            <div class="bar-tags"><span>18:00–00:00</span><span>周三休</span><span>约 ฿300/杯</span></div>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Nophaburi+Bar+Thai+Cocktail+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a>
+          </article>
+
+          <article class="bar-card" id="bar-northgate" data-reveal>
+            <div class="bar-number"><span>04 · 9/29</span><span class="rating">★ 4.7 · 5,265+</span></div>
+            <h3>North Gate Jazz</h3>
+            <div class="bar-type">现场爵士 · 周二 Jam</div>
+            <p>评价量远高于其他酒吧，音乐是核心。缺点是拥挤、座位少；19:15 到场，晚到就把站着听当成体验的一部分。</p>
+            <div class="bar-tags"><span>约 19:30–01:00</span><span>现场音乐</span><span>提前到</span></div>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=North+Gate+Jazz+Co-Op+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a>
+          </article>
+
+          <article class="bar-card" id="bar-san" data-reveal>
+            <div class="bar-number"><span>05 · 9/30</span><span class="rating">★ 4.8 · 385+</span></div>
+            <h3>Bar.San</h3>
+            <div class="bar-type">日式创意 · 本次重点</div>
+            <p>朋友验证“酒确实不错”，但也排过两小时。解决方案不是删掉，而是 18:00 开门即到；五人想聊天可询问二楼。</p>
+            <div class="bar-tags"><span>18:00–00:00</span><span>早到避排队</span><span>二楼较安静</span></div>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Bar.San+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a>
+          </article>
+
+          <article class="bar-card" id="bar-gladwell" data-reveal>
+            <div class="bar-number"><span>06 · 10/1</span><span class="rating">★ 4.9 · 289+</span></div>
+            <h3>Gladwell</h3>
+            <div class="bar-type">定制鸡尾酒 · 告别夜</div>
+            <p>六家中检索评分最高。调酒师会根据偏好定制，擅长野蜂蜜、米酒和烟熏椰奶等本地风味，适合最后一晚慢慢聊。</p>
+            <div class="bar-tags"><span>18:00–00:00</span><span>฿฿฿</span><span>聊天友好</span></div>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Gladwell+Cocktail+Bar+Chiang+Mai" target="_blank" rel="noopener">Google Maps ↗</a>
+          </article>
+        </div>
+
+        <div class="bar-note" data-reveal><strong>酒吧规则</strong><span>评分和营业时间为 2026 年 9 月 8 日检索到的公开信息，不是实时数据。出发前一周再检查营业日；每天只去一家，饮酒后全部 Grab，任何人都不负责开车。</span></div>
+      </div>
+    </section>
+
+    <section class="section page-shell" id="picks">
+      <div class="section-head" data-reveal>
+        <p class="kicker">Curated, not crowded</p>
+        <div>
+          <h2>想吃、想喝、想躺</h2>
+          <p class="section-intro">这是口袋备选，不是集章任务。看当天在哪一片、肚子想吃什么，再挑一张就行。</p>
+        </div>
+      </div>
+
+      <div class="filters" role="group" aria-label="筛选推荐" data-reveal>
+        <button class="filter-button" type="button" data-filter="all" aria-pressed="true">全部</button>
+        <button class="filter-button" type="button" data-filter="food" aria-pressed="false">餐厅</button>
+        <button class="filter-button" type="button" data-filter="coffee" aria-pressed="false">咖啡</button>
+        <button class="filter-button" type="button" data-filter="spa" aria-pressed="false">按摩</button>
+        <button class="filter-button" type="button" data-filter="optional" aria-pressed="false">可选体验</button>
+      </div>
+
+      <div class="pick-grid">
+        <article class="pick-card" data-category="food" data-reveal><div class="pick-top"><span class="pick-category">Restaurant</span><span class="rating">★ 4.7 · 1,399+</span></div><h3>Lookbua Thai Food</h3><p>朋友与公开评价双重通过。菜单很大、适合五人分享；高峰可能排队。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Lookbua+Thai+Food+Restaurant+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="food" data-reveal><div class="pick-top"><span class="pick-category">Restaurant</span><span class="pill">2026 Michelin</span></div><h3>Baan Landai</h3><p>古城内较正式的一餐，适合告别晚餐；周一休息，建议预约。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Baan+Landai+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="food" data-reveal><div class="pick-top"><span class="pick-category">Restaurant</span><span class="rating">★ 4.4 · 4,665+</span></div><h3>Huen Muan Jai</h3><p>评价量大的传统泰北菜，适合多人点一桌；不接受预约时要预留排队。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Huen+Muan+Jai+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="food" data-reveal><div class="pick-top"><span class="pick-category">Restaurant</span><span class="rating">★ 4.5 · 994+</span></div><h3>Krua Dabb Lob</h3><p>便宜、味道稳，但店小且多为户外座位。五人适合错峰午餐。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Krua+Dabb+Lob+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="coffee" data-reveal><div class="pick-top"><span class="pick-category">Coffee</span><span class="rating">★ 4.6 · 3,287+</span></div><h3>Akha Ama Phrasingh</h3><p>本地合作农场咖啡，空间大、价格友好，帕辛寺附近顺路。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Akha+Ama+Phrasingh+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="coffee" data-reveal><div class="pick-top"><span class="pick-category">Coffee</span><span class="rating">★ 4.6 · 1,243+</span></div><h3>Ristr8to Original</h3><p>宁曼标志性拉花与浓郁咖啡，店小、可能拥挤；只在顺路且排队短时去。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Ristr8to+Original+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="coffee" data-reveal><div class="pick-top"><span class="pick-category">Coffee</span><span class="rating">★ 4.4 · 716+</span></div><h3>Fern Forest Cafe</h3><p>花园氛围适合放空；周末常排队且会吵，安排工作日上午更合适。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Fern+Forest+Cafe+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="spa" data-reveal><div class="pick-top"><span class="pick-category">Spa</span><span class="rating">★ 4.9 · 1,034+</span></div><h3>Makkha Rachadamnoen</h3><p>高端环境与完整服务，按摩日首选。五人同时做项目务必提前预约。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Makkha+Health+Spa+Rachadamnoen+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="spa" data-reveal><div class="pick-top"><span class="pick-category">Massage</span><span class="rating">★ 4.7 · 2,208+</span></div><h3>Lila Thai Massage</h3><p>更平价的第二次按摩选择，也支持经过专业培训的女性重新就业。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Lila+Thai+Massage+Ratchadamnoen+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="optional" data-reveal><div class="pick-top"><span class="pick-category">Optional</span><span class="pill">雨天备选</span></div><h3>泰餐课</h3><p>你不太想做饭，因此不进默认行程。只有持续下雨且其他人都感兴趣时再选。</p></article>
+        <article class="pick-card" data-category="optional" data-reveal><div class="pick-top"><span class="pick-category">Optional</span><span class="pill">顺路</span></div><h3>Baan Kang Wat</h3><p>只和乌蒙寺组合。朋友认为偏贵和商业化，不值得单独打车前往。</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Baan+Kang+Wat+Chiang+Mai" target="_blank" rel="noopener">地图 ↗</a></article>
+        <article class="pick-card" data-category="optional" data-reveal><div class="pick-top"><span class="pick-category">Optional</span><span class="pill">彻底放空</span></div><h3>什么也不做</h3><p>午睡、洗衣、单独逛店都算正式行程。这张卡永远拥有最高优先级。</p></article>
+      </div>
+    </section>
+
+    <section class="section page-shell" id="practical">
+      <div class="section-head" data-reveal>
+        <p class="kicker">Before we go</p>
+        <div><h2>把麻烦留在出发前</h2><p class="section-intro">能提前确认的事情先确认，到了清迈就把脑容量留给吃饭、散步和发呆；敏感资料仍只留在五个人的私人群。</p></div>
+      </div>
+      <div class="practical-grid">
+        <article class="checklist" data-reveal>
+          <h3>待办清单</h3>
+          <ol class="plain-list">
+            <li data-step="1">确认五人护照有效期、泰国入境材料与行李额度</li>
+            <li data-step="2">提前预约 9/29 Makkha 的五人时段</li>
+            <li data-step="3">联系 9/28 带司机的 6–9 座车，确认雨天取消规则</li>
+            <li data-step="4">出发前一周复核六家酒吧的营业日与 Bar.San 等位方式</li>
+            <li data-step="5">准备瀑布水鞋、速干衣、防水袋、防蚊和一套干衣服</li>
+            <li data-step="6">向房东确认退房时间、10/2 行李寄存和机场叫车方式</li>
+            <li data-step="7">把民宿完整地址、保单与订单号只发在私人群，不放公开网页</li>
+          </ol>
+        </article>
+        <article class="rain-card" data-reveal>
+          <h3>雨季使用说明</h3>
+          <p>9 月下旬还在雨季，天气会有自己的小脾气。出发前 7 天看趋势，前 48 小时再决定瀑布日，给行程留一点转身空间。</p>
+          <ul class="plain-list">
+            <li data-step="A">短时阵雨：照常出门，咖啡店或 One Nimman 躲雨</li>
+            <li data-step="B">持续大雨：9/28 与 9/29 互换，先按摩休整</li>
+            <li data-step="C">雷雨或山路预警：取消瀑布，不以“必去”为理由冒险</li>
+          </ul>
+          <div class="privacy-note"><strong>离线说明：</strong>页面正文会缓存到手机，弱网时仍可查看；Google Maps、实时天气和外部官网需要网络。</div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="page-shell footer-grid">
+      <div><div class="footer-title">See you in Chiang Mai.</div><div>内容核对：2026-09-08 · 评分与营业时间可能变化</div></div>
+      <div>公开分享版 · 已隐藏住宿门牌与订单信息</div>
+    </div>
+  </footer>
+
+  <nav class="bottom-nav" aria-label="页面主要区域">
+    <a href="#now">现在</a>
+    <a href="#days">每天</a>
+    <a href="#bars">酒吧</a>
+    <a href="#picks">收藏</a>
+  </nav>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog class="planner-dialog" id="eventDialog">
+    <form id="eventForm">
+      <div class="dialog-head"><h3 id="eventDialogTitle">编辑行程</h3><button class="dialog-close" type="button" data-close-dialog aria-label="关闭">×</button></div>
+      <div class="dialog-body">
+        <input id="eventId" name="eventId" type="hidden">
+        <label class="dialog-field"><span>日期</span><select id="eventDay" name="day" required></select></label>
+        <label class="dialog-field"><span>时间</span><input id="eventTime" name="time" type="time" required></label>
+        <label class="dialog-field wide"><span>地点 / 安排</span><input id="eventTitle" name="title" maxlength="80" required placeholder="例如：找一家咖啡店坐着"></label>
+        <label class="dialog-field wide"><span>备注</span><textarea id="eventDescription" name="description" maxlength="400" placeholder="交通、预约或下雨时的备选"></textarea></label>
+        <label class="dialog-field wide"><span>地图链接（可不填）</span><input id="eventMapUrl" name="mapUrl" type="url" inputmode="url" placeholder="https://maps.google.com/..."></label>
+      </div>
+      <div class="dialog-foot"><button class="dialog-button" type="button" data-close-dialog>取消</button><button class="dialog-button primary" type="submit">保存行程</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="planner-dialog" id="expenseDialog">
+    <form id="expenseForm">
+      <div class="dialog-head"><h3 id="expenseDialogTitle">记一笔花费</h3><button class="dialog-close" type="button" data-close-dialog aria-label="关闭">×</button></div>
+      <div class="dialog-body">
+        <input id="expenseId" name="expenseId" type="hidden">
+        <input id="expenseEventId" name="eventId" type="hidden">
+        <label class="dialog-field"><span>金额</span><input id="expenseAmount" name="amount" type="number" min="0.01" step="0.01" inputmode="decimal" required placeholder="0.00"></label>
+        <label class="dialog-field"><span>币种</span><select id="expenseCurrency" name="currency"><option value="THB">泰铢 THB</option><option value="CNY">人民币 CNY</option></select></label>
+        <label class="dialog-field"><span>类别</span><select id="expenseCategory" name="category"><option>餐饮</option><option>交通</option><option>门票</option><option>咖啡</option><option>酒吧</option><option>按摩</option><option>购物</option><option>其他</option></select></label>
+        <label class="dialog-field"><span>付款人</span><select id="expensePayer" name="payer"><option>小5</option><option>小熊</option><option>小兰</option><option>小陈</option><option>小猪</option><option>共同支出</option></select></label>
+        <label class="dialog-field wide"><span>备注（可不填）</span><input id="expenseNote" name="note" maxlength="100" placeholder="例如：Grab，两辆车"></label>
+      </div>
+      <div class="dialog-foot"><button class="dialog-button" type="button" data-close-dialog>取消</button><button class="dialog-button primary" type="submit">保存花费</button></div>
+    </form>
+  </dialog>
+
+  <script>
+    const tripStart = new Date("2026-09-25T19:45:00+08:00");
+    const tripEnd = new Date("2026-10-03T01:55:00+08:00");
+
+    const tripEvents = [
+      { at: "2026-09-25T19:45:00+08:00", title: "PN6595 从重庆起飞", date: "9月25日 · 重庆时间" },
+      { at: "2026-09-25T21:35:00+07:00", title: "抵达清迈，Grab 前往古城", date: "9月25日 · 清迈时间" },
+      { at: "2026-09-26T10:30:00+07:00", title: "Akha Ama 的第一杯咖啡", date: "9月26日 · 古城软着陆" },
+      { at: "2026-09-26T21:15:00+07:00", title: "Bitter Truth · 第一杯夜酒", date: "9月26日 · 酒吧 1/6" },
+      { at: "2026-09-27T11:00:00+07:00", title: "宁曼路慢慢逛", date: "9月27日 · 咖啡与校园" },
+      { at: "2026-09-27T16:30:00+07:00", title: "Ang Kaew 水库看夕阳", date: "9月27日 · 清迈大学" },
+      { at: "2026-09-27T21:30:00+07:00", title: "The White Rabbit", date: "9月27日 · 酒吧 2/6" },
+      { at: "2026-09-28T08:00:00+07:00", title: "包车前往粘粘瀑布", date: "9月28日 · 郊区体验日" },
+      { at: "2026-09-28T14:00:00+07:00", title: "象粪纸公园手作体验", date: "9月28日 · POOPOOPAPER" },
+      { at: "2026-09-28T21:00:00+07:00", title: "Nophaburi 的泰式鸡尾酒", date: "9月28日 · 酒吧 3/6" },
+      { at: "2026-09-29T15:00:00+07:00", title: "Makkha 按摩修复", date: "9月29日 · 修复日" },
+      { at: "2026-09-29T19:15:00+07:00", title: "North Gate 周二 Jam Night", date: "9月29日 · 酒吧 4/6" },
+      { at: "2026-09-30T18:00:00+07:00", title: "Bar.San 开门即到", date: "9月30日 · 酒吧 5/6" },
+      { at: "2026-10-01T10:30:00+07:00", title: "乌蒙寺的森林与隧道", date: "10月1日 · 最后完整日" },
+      { at: "2026-10-01T21:00:00+07:00", title: "Gladwell 告别夜", date: "10月1日 · 酒吧 6/6" },
+      { at: "2026-10-02T12:00:00+07:00", title: "退房并寄存行李", date: "10月2日 · 返程日" },
+      { at: "2026-10-02T19:15:00+07:00", title: "Grab 前往清迈机场", date: "10月2日 · 不喝酒" },
+      { at: "2026-10-02T22:35:00+07:00", title: "PN6596 飞往重庆", date: "10月2日 · 清迈时间" },
+      { at: "2026-10-03T01:55:00+08:00", title: "抵达重庆江北 T3", date: "10月3日 · 重庆时间" }
+    ].map(event => ({ ...event, dateObject: new Date(event.at) }));
+
+    const pad = value => String(value).padStart(2, "0");
+
+    function splitDuration(milliseconds) {
+      const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+      return {
+        days: Math.floor(totalSeconds / 86400),
+        hours: Math.floor((totalSeconds % 86400) / 3600),
+        minutes: Math.floor((totalSeconds % 3600) / 60),
+        seconds: totalSeconds % 60
+      };
+    }
+
+    function updateTime() {
+      const now = new Date();
+      const countdownTarget = now < tripStart ? tripStart : tripEnd;
+      const duration = splitDuration(countdownTarget - now);
+      const state = document.getElementById("tripState");
+
+      if (now < tripStart) state.textContent = "距离出发";
+      else if (now <= tripEnd) state.textContent = "旅行进行中";
+      else state.textContent = "旅程已收官";
+
+      document.querySelectorAll("#heroCountdown [data-unit]").forEach(node => {
+        const unit = node.dataset.unit;
+        node.textContent = unit === "days" ? duration[unit] : pad(duration[unit]);
+      });
+
+      const schedule = window.tripPlanner?.upcomingEvents?.() || tripEvents;
+      const next = schedule.find(event => event.dateObject > now);
+      const nextTitle = document.getElementById("nextTitle");
+      const nextDate = document.getElementById("nextDate");
+      const nextCountdown = document.getElementById("nextCountdown");
+
+      if (!next) {
+        nextDate.textContent = "旅程结束";
+        nextTitle.textContent = "把清迈带回家了";
+        nextCountdown.textContent = "照片慢慢整理，旅行不用急着结束。";
+        return;
+      }
+
+      const nextDuration = splitDuration(next.dateObject - now);
+      nextDate.textContent = next.date;
+      nextTitle.textContent = next.title;
+      nextCountdown.textContent = nextDuration.days > 0
+        ? `${nextDuration.days} 天 ${pad(nextDuration.hours)} 小时后`
+        : `${pad(nextDuration.hours)} 小时 ${pad(nextDuration.minutes)} 分后`;
+    }
+
+    function bangkokHour() {
+      const hour = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Bangkok",
+        hour: "2-digit",
+        hour12: false
+      }).format(new Date());
+      return Number(hour) % 24;
+    }
+
+    function applyTheme() {
+      const saved = sessionStorage.getItem("cm-theme");
+      const isNight = saved ? saved === "night" : bangkokHour() < 7 || bangkokHour() >= 18;
+      document.body.classList.toggle("night", isNight);
+      document.getElementById("themeButton").textContent = isNight ? "☾" : "☼";
+      document.querySelector('meta[name="theme-color"]').setAttribute("content", isNight ? "#10231b" : "#254a37");
+    }
+
+    function bangkokDateKey() {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Bangkok",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date());
+      const value = type => parts.find(part => part.type === type)?.value;
+      return `${value("year")}-${value("month")}-${value("day")}`;
+    }
+
+    function openRelevantDay() {
+      const today = bangkokDateKey();
+      const cards = [...document.querySelectorAll(".day-card")];
+      const selected = cards.find(card => card.dataset.date === today)
+        || (today < "2026-09-25" ? cards[0] : cards[cards.length - 1]);
+      if (selected) selected.open = true;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    document.getElementById("themeButton").addEventListener("click", () => {
+      const nextTheme = document.body.classList.contains("night") ? "day" : "night";
+      sessionStorage.setItem("cm-theme", nextTheme);
+      applyTheme();
+    });
+
+    document.getElementById("shareButton").addEventListener("click", async () => {
+      const shareData = { title: document.title, text: "清迈爽玩之｜五人泰北松弛局", url: location.href };
+      try {
+        if (navigator.share) await navigator.share(shareData);
+        else {
+          await navigator.clipboard.writeText(location.href);
+          showToast("链接已复制");
+        }
+      } catch (error) {
+        if (error.name !== "AbortError") showToast("暂时无法分享，请复制浏览器地址");
+      }
+    });
+
+    document.getElementById("printButton").addEventListener("click", () => window.print());
+
+    document.querySelectorAll(".filter-button").forEach(button => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        document.querySelectorAll(".filter-button").forEach(item => item.setAttribute("aria-pressed", item === button));
+        document.querySelectorAll(".pick-card").forEach(card => {
+          card.hidden = filter !== "all" && card.dataset.category !== filter;
+        });
+      });
+    });
+
+    const revealObserver = "IntersectionObserver" in window
+      ? new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .08 })
+      : null;
+
+    document.querySelectorAll("[data-reveal]").forEach((node, index) => {
+      node.style.transitionDelay = `${Math.min(index % 5, 4) * 55}ms`;
+      if (revealObserver) revealObserver.observe(node);
+      else node.classList.add("visible");
+    });
+
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
+
+    applyTheme();
+    openRelevantDay();
+    updateTime();
+    window.setInterval(updateTime, 1000);
+  </script>
+  <script src="sync-config.js?v=4"></script>
+  <script src="trip-app.js?v=4"></script>
+</body>
+</html>
